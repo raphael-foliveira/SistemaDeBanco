@@ -8,6 +8,10 @@ public class Conta {
         this.saldo = 0;
     }
 
+    public Conta(double saldo) {
+        this.saldo = saldo;
+    }
+
     public double getSaldo() {
         return saldo;
     }

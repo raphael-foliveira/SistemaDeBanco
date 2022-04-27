@@ -1,29 +1,27 @@
 package com.sistemadebanco;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Banco {
 
-    static private ArrayList<Usuario> todosUsuarios = new ArrayList<>();;
+    private ControladorDB bancoDeDados;
 
-    static private void adicionarUsuario(Usuario usuario) {
-        todosUsuarios.add(usuario);
+    public Banco() throws SQLException {
+        bancoDeDados = new ControladorDB();
     }
 
-    static public void removerUsuario(Usuario usuario) {
-        todosUsuarios.remove(usuario);
-    }
-
-    static public void cadastrarNovoUsuario() {
+    public void cadastrarNovoUsuario() throws SQLException {
         System.out.println("Digite os dados do novo usuário a seguir: ");
-        String nome = InterfaceUsuario.inputString("Nome: ");
-        String login = InterfaceUsuario.inputString("Login: ");
-        String senha = InterfaceUsuario.inputString("Senha: ");
-        Usuario novoUsuario = new Usuario(nome, login, senha);
-        adicionarUsuario(novoUsuario);
+        String nome = InputUsuario.inputString("Nome: ");
+        String login = InputUsuario.inputString("Login: ");
+        String senha = InputUsuario.inputString("Senha: ");
+        bancoDeDados.guardarUsuario(nome, login, senha);
+
     }
 
-    private static Usuario validarUsuario(String loginUsuario, String senhaUsuario) {
+    private Usuario validarUsuario(String loginUsuario, String senhaUsuario) throws SQLException {
+        ArrayList<Usuario> todosUsuarios = bancoDeDados.retornarTodosUsuarios();
         for (Usuario usuario : todosUsuarios) {
             if (usuario.getLogin().equals(loginUsuario)) {
                 if (usuario.checarSenha(senhaUsuario)) {
@@ -36,7 +34,8 @@ public class Banco {
         return null;
     }
 
-    public static Usuario encontrarUsuario(String nome) {
+    public Usuario encontrarUsuario(String nome) throws SQLException {
+        ArrayList<Usuario> todosUsuarios = bancoDeDados.retornarTodosUsuarios();
         for (Usuario usuario : todosUsuarios) {
             if (usuario.getNome().equals(nome)) {
                 return usuario;
@@ -45,12 +44,19 @@ public class Banco {
         return null;
     }
 
-    public static Usuario fazerLoginUsuario() {
-        String login = InterfaceUsuario.inputString("Login: ");
-        String senha = InterfaceUsuario.inputString("Senha: ");
+    public void removerUsuario(Usuario usuario) throws SQLException {
+        bancoDeDados.apagarUsuario(usuario);
+    }
+
+    public Usuario fazerLoginUsuario() throws SQLException {
+        String login = InputUsuario.inputString("Login: ");
+        String senha = InputUsuario.inputString("Senha: ");
         Usuario usuario = validarUsuario(login, senha);
         return usuario;
+    }
 
+    public ControladorDB getBancoDeDados() {
+        return bancoDeDados;
     }
 
 }

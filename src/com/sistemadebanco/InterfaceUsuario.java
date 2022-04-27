@@ -1,49 +1,34 @@
 package com.sistemadebanco;
 
-import java.util.Scanner;
+import java.sql.SQLException;
 
 public class InterfaceUsuario {
 
-    public static String inputString(String mensagem) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print(mensagem);
-        String userString = scanner.nextLine();
-        return userString;
+    Banco banco;
+
+    public InterfaceUsuario() throws SQLException {
+        this.banco = new Banco();
     }
 
-    public static int inputInt(String mensagem) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print(mensagem);
-        int userInt = scanner.nextInt();
-        return userInt;
-    }
-
-    public static double inputDouble(String mensagem) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print(mensagem);
-        double userDouble = scanner.nextDouble();
-        return userDouble;
-    }
-
-    public static void menuPrincipal() {
+    public void menuPrincipal() throws SQLException {
         System.out.println("O que deseja fazer?");
         System.out.println("1) Acessar conta");
         System.out.println("2) Criar conta");
         System.out.println("0) Sair");
-        int opcao = InterfaceUsuario.inputInt(">>> ");
+        int opcao = InputUsuario.inputInt(">>> ");
         menuPrincipalOpcao(opcao);
     }
 
-    public static void menuPrincipalOpcao(int opcao) {
+    public void menuPrincipalOpcao(int opcao) throws SQLException {
         switch (opcao) {
             case 1:
-                Usuario usuarioLogado = Banco.fazerLoginUsuario();
+                Usuario usuarioLogado = banco.fazerLoginUsuario();
                 if (!usuarioLogado.equals(null)) {
                     menuUsuario(usuarioLogado);
                 }
                 break;
             case 2:
-                Banco.cadastrarNovoUsuario();
+                banco.cadastrarNovoUsuario();
                 menuPrincipal();
                 break;
             case 0:
@@ -56,7 +41,7 @@ public class InterfaceUsuario {
         }
     }
 
-    public static void menuUsuario(Usuario usuario) {
+    public void menuUsuario(Usuario usuario) throws SQLException {
         System.out.println("Escolha uma opção a seguir: ");
         System.out.println("1) Depósito");
         System.out.println("2) Saque");
@@ -64,28 +49,32 @@ public class InterfaceUsuario {
         System.out.println("4) Ver saldo");
         System.out.println("5) Apagar minha conta");
         System.out.println("0) Log Out");
-        int opcao = InterfaceUsuario.inputInt(">>> ");
+        int opcao = InputUsuario.inputInt(">>> ");
         menuUsuarioOpcao(opcao, usuario);
     }
 
-    public static void menuUsuarioOpcao(int opcao, Usuario usuario) {
+    public void menuUsuarioOpcao(int opcao, Usuario usuario) throws SQLException {
         double valor;
         switch (opcao) {
             case 1:
-                valor = InterfaceUsuario.inputDouble("Valor do depósito: ");
+                valor = InputUsuario.inputDouble("Valor do depósito: ");
                 usuario.credito(valor);
+                banco.getBancoDeDados().atualizarSaldo(usuario.getSaldo(), usuario.getLogin());
                 menuUsuario(usuario);
                 break;
             case 2:
-                valor = InterfaceUsuario.inputDouble("Valor do saque: ");
+                valor = InputUsuario.inputDouble("Valor do saque: ");
                 usuario.debito(valor);
+                banco.getBancoDeDados().atualizarSaldo(usuario.getSaldo(), usuario.getLogin());
                 menuUsuario(usuario);
                 break;
             case 3:
-                String nomeDoUsuarioDestino = InterfaceUsuario.inputString("Nome do usuário para transferência: ");
-                valor = InterfaceUsuario.inputDouble("Valor da transferência: ");
-                Usuario usuarioDestino = Banco.encontrarUsuario(nomeDoUsuarioDestino);
+                String nomeDoUsuarioDestino = InputUsuario.inputString("Nome do usuário para transferência: ");
+                valor = InputUsuario.inputDouble("Valor da transferência: ");
+                Usuario usuarioDestino = banco.encontrarUsuario(nomeDoUsuarioDestino);
                 usuario.transferir(usuarioDestino, valor);
+                banco.getBancoDeDados().atualizarSaldo(usuario.getSaldo(), usuario.getLogin());
+                banco.getBancoDeDados().atualizarSaldo(usuarioDestino.getSaldo(), usuarioDestino.getLogin());
                 menuUsuario(usuario);
                 break;
             case 4:
@@ -94,7 +83,7 @@ public class InterfaceUsuario {
                 break;
             case 5:
                 System.out.println("Sentimos muito por sua partida");
-                Banco.removerUsuario(usuario);
+                banco.removerUsuario(usuario);
                 menuPrincipal();
                 break;
             case 0:

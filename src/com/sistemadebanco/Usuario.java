@@ -13,6 +13,13 @@ public class Usuario {
         this.conta = new Conta();
     }
 
+    public Usuario(String nome, String login, String senha, double saldo) {
+        this.nome = nome;
+        this.login = login;
+        this.senha = senha;
+        this.conta = new Conta(saldo);
+    }
+
     public void credito(double valor) {
         conta.credito(valor);
     }
@@ -41,5 +48,9 @@ public class Usuario {
 
     public String getNome() {
         return this.nome;
+    }
+
+    public double getSaldo() {
+        return this.conta.getSaldo();
     }
 }
