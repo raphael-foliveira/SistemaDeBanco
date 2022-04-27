@@ -62,6 +62,7 @@ public class InterfaceUsuario {
         System.out.println("2) Saque");
         System.out.println("3) Transferência");
         System.out.println("4) Ver saldo");
+        System.out.println("5) Apagar minha conta");
         System.out.println("0) Log Out");
         int opcao = InterfaceUsuario.inputInt(">>> ");
         menuUsuarioOpcao(opcao, usuario);
@@ -90,6 +91,11 @@ public class InterfaceUsuario {
             case 4:
                 usuario.printSaldo();
                 menuUsuario(usuario);
+                break;
+            case 5:
+                System.out.println("Sentimos muito por sua partida");
+                Banco.removerUsuario(usuario);
+                menuPrincipal();
                 break;
             case 0:
                 menuPrincipal();
