@@ -59,4 +59,14 @@ public class Banco {
         return bancoDeDados;
     }
 
+    public void debitoUsuario(Usuario usuario, double valor) throws SQLException {
+        usuario.debito(valor);
+        bancoDeDados.atualizarSaldo(usuario.getSaldo(), usuario.getLogin());
+    }
+
+    public void creditoUsuario(Usuario usuario, double valor) throws SQLException {
+        usuario.credito(valor);
+        bancoDeDados.atualizarSaldo(usuario.getSaldo(), usuario.getLogin());
+    }
+
 }

@@ -20,24 +20,19 @@ public class InterfaceUsuario {
     }
 
     public void menuPrincipalOpcao(int opcao) throws SQLException {
-        switch (opcao) {
-            case 1:
-                Usuario usuarioLogado = banco.fazerLoginUsuario();
-                if (!usuarioLogado.equals(null)) {
-                    menuUsuario(usuarioLogado);
-                }
-                break;
-            case 2:
-                banco.cadastrarNovoUsuario();
-                menuPrincipal();
-                break;
-            case 0:
-                System.out.println("Até logo");
-                break;
-            default:
-                System.out.println("Opção inválida");
-                menuPrincipal();
-                break;
+        if (opcao == 1) {
+            Usuario usuarioLogado = banco.fazerLoginUsuario();
+            if (!usuarioLogado.equals(null)) {
+                menuUsuario(usuarioLogado);
+            }
+        } else if (opcao == 2) {
+            banco.cadastrarNovoUsuario();
+            menuPrincipal();
+        } else if (opcao == 0) {
+            System.out.println("Até logo");
+        } else {
+            System.out.println("Opção inválida");
+            menuPrincipal();
         }
     }
 
@@ -55,45 +50,33 @@ public class InterfaceUsuario {
 
     public void menuUsuarioOpcao(int opcao, Usuario usuario) throws SQLException {
         double valor;
-        switch (opcao) {
-            case 1:
-                valor = InputUsuario.inputDouble("Valor do depósito: ");
-                usuario.credito(valor);
-                banco.getBancoDeDados().atualizarSaldo(usuario.getSaldo(), usuario.getLogin());
-                menuUsuario(usuario);
-                break;
-            case 2:
-                valor = InputUsuario.inputDouble("Valor do saque: ");
-                usuario.debito(valor);
-                banco.getBancoDeDados().atualizarSaldo(usuario.getSaldo(), usuario.getLogin());
-                menuUsuario(usuario);
-                break;
-            case 3:
-                String nomeDoUsuarioDestino = InputUsuario.inputString("Nome do usuário para transferência: ");
-                valor = InputUsuario.inputDouble("Valor da transferência: ");
-                Usuario usuarioDestino = banco.encontrarUsuario(nomeDoUsuarioDestino);
-                usuario.transferir(usuarioDestino, valor);
-                banco.getBancoDeDados().atualizarSaldo(usuario.getSaldo(), usuario.getLogin());
-                banco.getBancoDeDados().atualizarSaldo(usuarioDestino.getSaldo(), usuarioDestino.getLogin());
-                menuUsuario(usuario);
-                break;
-            case 4:
-                usuario.printSaldo();
-                menuUsuario(usuario);
-                break;
-            case 5:
-                System.out.println("Sentimos muito por sua partida");
-                banco.removerUsuario(usuario);
-                menuPrincipal();
-                break;
-            case 0:
-                menuPrincipal();
-                break;
-            default:
-                System.out.println("Comando inválido");
-                menuUsuario(usuario);
-                break;
+        if (opcao == 1) {
+            valor = InputUsuario.inputDouble("Valor do depósito: ");
+            banco.creditoUsuario(usuario, valor);
+            menuUsuario(usuario);
+        } else if (opcao == 2) {
+            valor = InputUsuario.inputDouble("Valor do saque: ");
+            banco.debitoUsuario(usuario, valor);
+            menuUsuario(usuario);
+        } else if (opcao == 3) {
+            String nomeDoUsuarioDestino = InputUsuario.inputString("Nome do usuário para transferência: ");
+            valor = InputUsuario.inputDouble("Valor da transferência: ");
+            Usuario usuarioDestino = banco.encontrarUsuario(nomeDoUsuarioDestino);
+            banco.debitoUsuario(usuario, valor);
+            banco.creditoUsuario(usuarioDestino, valor);
+            menuUsuario(usuario);
+        } else if (opcao == 4) {
+            usuario.printSaldo();
+            menuUsuario(usuario);
+        } else if (opcao == 5) {
+            System.out.println("Sentimos muito por sua partida");
+            banco.removerUsuario(usuario);
+            menuPrincipal();
+        } else if (opcao == 0) {
+            menuPrincipal();
+        } else {
+            System.out.println("Comando inválido");
+            menuUsuario(usuario);
         }
     }
-
 }
