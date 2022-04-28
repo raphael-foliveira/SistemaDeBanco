@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 public class InterfaceUsuario {
 
-    Banco banco;
+    private Banco banco;
 
     public InterfaceUsuario() throws SQLException {
         this.banco = new Banco();
@@ -26,6 +26,8 @@ public class InterfaceUsuario {
             Usuario usuarioLogado = banco.fazerLoginUsuario();
             if (!usuarioLogado.equals(null)) {
                 menuUsuario(usuarioLogado);
+            } else {
+                System.out.println("Usuário ou senha inválidos.");
             }
         } else if (opcao == 2) {
             banco.cadastrarNovoUsuario();
