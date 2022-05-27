@@ -7,11 +7,11 @@ public class Banco {
 
     private ControladorDB bancoDeDados;
 
-    public Banco() throws SQLException {
+    public Banco() {
         bancoDeDados = new ControladorDB();
     }
 
-    public void cadastrarNovoUsuario() throws SQLException {
+    public void cadastrarNovoUsuario() {
         System.out.println("Digite os dados do novo usuário a seguir: ");
         String nome = InputUsuario.inputString("Nome: ");
         String login = InputUsuario.inputString("Login: ");
@@ -20,7 +20,7 @@ public class Banco {
 
     }
 
-    private Usuario validarUsuario(String loginUsuario, String senhaUsuario) throws SQLException {
+    private Usuario validarUsuario(String loginUsuario, String senhaUsuario) {
         ArrayList<Usuario> todosUsuarios = bancoDeDados.retornarTodosUsuarios();
         for (Usuario usuario : todosUsuarios) {
             if (usuario.getLogin().equals(loginUsuario)) {
@@ -34,7 +34,7 @@ public class Banco {
         return null;
     }
 
-    public Usuario encontrarUsuario(String nome) throws SQLException {
+    public Usuario encontrarUsuario(String nome) {
         ArrayList<Usuario> todosUsuarios = bancoDeDados.retornarTodosUsuarios();
         for (Usuario usuario : todosUsuarios) {
             if (usuario.getNome().equals(nome)) {
@@ -44,11 +44,11 @@ public class Banco {
         return null;
     }
 
-    public void removerUsuario(Usuario usuario) throws SQLException {
+    public void removerUsuario(Usuario usuario) {
         bancoDeDados.apagarUsuario(usuario);
     }
 
-    public Usuario fazerLoginUsuario() throws SQLException {
+    public Usuario fazerLoginUsuario() {
         String login = InputUsuario.inputString("Login: ");
         String senha = InputUsuario.inputString("Senha: ");
         Usuario usuario = validarUsuario(login, senha);
@@ -59,12 +59,12 @@ public class Banco {
         return bancoDeDados;
     }
 
-    public void debitoUsuario(Usuario usuario, double valor) throws SQLException {
+    public void debitoUsuario(Usuario usuario, double valor) {
         usuario.debito(valor);
         bancoDeDados.atualizarSaldo(usuario.getSaldo(), usuario.getLogin());
     }
 
-    public void creditoUsuario(Usuario usuario, double valor) throws SQLException {
+    public void creditoUsuario(Usuario usuario, double valor) {
         usuario.credito(valor);
         bancoDeDados.atualizarSaldo(usuario.getSaldo(), usuario.getLogin());
     }

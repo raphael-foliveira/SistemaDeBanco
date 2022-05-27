@@ -3,9 +3,10 @@ package com.sistemadebanco;
 import java.util.Scanner;
 
 public class InputUsuario {
+    private static Scanner scanner;
 
     public static String inputString(String mensagem) {
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
 
         System.out.print(mensagem);
         String userString = scanner.nextLine();
@@ -13,7 +14,7 @@ public class InputUsuario {
     }
 
     public static int inputInt(String mensagem) {
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
 
         System.out.print(mensagem);
         int userInt = scanner.nextInt();
@@ -21,7 +22,7 @@ public class InputUsuario {
     }
 
     public static double inputDouble(String mensagem) {
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
 
         System.out.print(mensagem);
         double userDouble = scanner.nextDouble();
