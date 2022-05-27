@@ -1,16 +1,14 @@
 package com.sistemadebanco;
 
-import java.sql.SQLException;
-
 public class InterfaceUsuario {
 
     private Banco banco;
 
-    public InterfaceUsuario() throws SQLException {
+    public InterfaceUsuario() {
         this.banco = new Banco();
     }
 
-    public void menuPrincipal() throws SQLException {
+    public void menuPrincipal() {
         System.out.println("O que deseja fazer?");
         System.out.println("1) Acessar conta");
         System.out.println("2) Criar conta");
@@ -21,7 +19,7 @@ public class InterfaceUsuario {
         menuPrincipalOpcao(opcao);
     }
 
-    public void menuPrincipalOpcao(int opcao) throws SQLException {
+    public void menuPrincipalOpcao(int opcao) {
         if (opcao == 1) {
             Usuario usuarioLogado = banco.fazerLoginUsuario();
             if (!usuarioLogado.equals(null)) {
@@ -41,7 +39,7 @@ public class InterfaceUsuario {
         menuPrincipal();
     }
 
-    public void menuUsuario(Usuario usuario) throws SQLException {
+    public void menuUsuario(Usuario usuario) {
         System.out.println("Escolha uma opção a seguir: ");
         System.out.println("1) Depósito");
         System.out.println("2) Saque");
@@ -55,7 +53,7 @@ public class InterfaceUsuario {
         menuUsuarioOpcao(opcao, usuario);
     }
 
-    public void menuUsuarioOpcao(int opcao, Usuario usuario) throws SQLException {
+    public void menuUsuarioOpcao(int opcao, Usuario usuario) {
         double valor;
         if (opcao == 1) {
             valor = InputUsuario.inputDouble("Valor do depósito: ");
